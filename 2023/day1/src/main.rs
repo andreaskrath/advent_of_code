@@ -73,24 +73,19 @@ fn part2(input: &str) -> u32 {
 }
 
 #[cfg(test)]
-mod part1 {
-    use crate::part1;
+mod tests {
+    use crate::{part1, part2};
 
     #[test]
-    fn sample() {
+    fn part1_sample() {
         let input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
         let expected = 142;
         let actual = part1(input);
         assert_eq!(actual, expected);
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::part2;
 
     #[test]
-    fn sample() {
+    fn part2_sample() {
         let input = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
         let expected = 281;
         let actual = part2(input);
