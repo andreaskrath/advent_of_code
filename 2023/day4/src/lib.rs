@@ -1,3 +1,5 @@
+use std::sync::{mpsc, Arc};
+
 pub fn part1(input: &str) -> usize {
     let mut sum = 0;
 
@@ -74,6 +76,82 @@ pub fn part2(input: &str) -> usize {
                 sum += 1;
             }
         }
+    }
+
+    sum
+}
+
+pub fn part2_async(input: &str) -> usize {
+    async fn process(
+        min: usize,
+        max: usize,
+        cards: Arc<Vec<(Vec<u8>, Vec<u8>)>>,
+        send: mpsc::Sender<usize>,
+    ) {
+        let mut sum = (min..max).len();
+        let mut queue: Vec<usize> = (min..max).collect();
+
+        while let Some(index) = queue.pop() {
+            let mut offset = 1;
+            let (winners, numbers) = cards.get(index).unwrap();
+            for num in numbers {
+                if winners.contains(num) {
+                    queue.push(index + offset);
+                    offset += 1;
+                    sum += 1;
+                }
+            }
+        }
+
+        send.send(sum).unwrap();
+    }
+
+    let scratchcards: Vec<(Vec<u8>, Vec<u8>)> = input
+        .lines()
+        .map(|l| {
+            let (w, n) = l.to_string()[9..]
+                .trim()
+                .split_once('|')
+                .map(|(w, n)| {
+                    let w: Vec<u8> = w
+                        .split_ascii_whitespace()
+                        .map(|s| s.parse().unwrap())
+                        .collect();
+                    let n: Vec<u8> = n
+                        .split_ascii_whitespace()
+                        .map(|s| s.parse().unwrap())
+                        .collect();
+
+                    (w, n)
+                })
+                .unwrap();
+
+            (w, n)
+        })
+        .collect();
+    let cards = Arc::new(scratchcards);
+
+    let (send, recv) = mpsc::channel();
+    let mut sum = 0;
+    let ranges = [
+        (0, 25),
+        (25, 50),
+        (50, 75),
+        (75, 100),
+        (100, 125),
+        (125, 150),
+        (150, 175),
+        (175, 200),
+        (200, 218),
+    ];
+
+    for (min, max) in ranges {
+        tokio::task::spawn(process(min, max, cards.clone(), send.clone()));
+    }
+    drop(send);
+
+    while let Ok(val) = recv.recv() {
+        sum += val;
     }
 
     sum
