@@ -1,5 +1,3 @@
-use std::time::Instant;
-
 const NUMBER_WORDS: [(&str, char); 9] = [
     ("one", '1'),
     ("two", '2'),
@@ -12,21 +10,7 @@ const NUMBER_WORDS: [(&str, char); 9] = [
     ("nine", '9'),
 ];
 
-fn main() {
-    let input = include_str!("../input.txt");
-
-    let part1_start = Instant::now();
-    let part1_res = part1(input);
-    let part1_stop = part1_start.elapsed();
-    println!("Part 1 is '{}' in {:2.?}", part1_res, part1_stop);
-
-    let part2_start = Instant::now();
-    let part2_res = part2(input);
-    let part2_stop = part2_start.elapsed();
-    println!("Part 2 is '{}' in {:2.?}", part2_res, part2_stop);
-}
-
-fn part1(input: &str) -> u32 {
+pub fn part1(input: &str) -> u32 {
     input
         .lines()
         .map(|s| {
@@ -40,7 +24,7 @@ fn part1(input: &str) -> u32 {
         .sum()
 }
 
-fn part2(input: &str) -> u32 {
+pub fn part2(input: &str) -> u32 {
     let replaced = input
         .lines()
         .map(|s| {
