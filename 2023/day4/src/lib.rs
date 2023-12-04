@@ -1,20 +1,4 @@
-use std::time::Instant;
-
-fn main() {
-    let input = include_str!("../input.txt");
-
-    let part1_start = Instant::now();
-    let part1_res = part1(input);
-    let part1_stop = part1_start.elapsed();
-    println!("Part 1 is '{}' in {:2.?}", part1_res, part1_stop);
-
-    let part2_start = Instant::now();
-    let part2_res = part2(input);
-    let part2_stop = part2_start.elapsed();
-    println!("Part 2 is '{}' in {:2.?}", part2_res, part2_stop);
-}
-
-fn part1(input: &str) -> usize {
+pub fn part1(input: &str) -> usize {
     let mut sum = 0;
 
     for line in input.lines() {
@@ -52,7 +36,7 @@ fn part1(input: &str) -> usize {
     sum
 }
 
-fn part2(input: &str) -> usize {
+pub fn part2(input: &str) -> usize {
     let scratchcards: Vec<(Vec<u8>, Vec<u8>)> = input
         .lines()
         .map(|l| {
