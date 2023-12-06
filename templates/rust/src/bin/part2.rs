@@ -1,7 +1,5 @@
 use std::time::Instant;
 
-use day1::part2;
-
 fn main() {
     let input = include_str!("../../input.txt");
 

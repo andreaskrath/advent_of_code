@@ -1,5 +1,4 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use day1::{part1, part2};
 
 fn part1_bench(c: &mut Criterion) {
     let input = include_str!("../input.txt");
